@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guestbook</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Guestbook Messages</h1>
+        <nav class="text-center mb-4"></nav>
+            <a href="/" class="btn btn-outline-primary me-2">Home</a>
+            <a href="/guestbook" class="btn btn-outline-primary me-2">Guestbook</a>
+            <a href="/newmessage" class="btn btn-outline-primary me-2">Leave a Message</a>
+            <a href="/ajaxmessage" class="btn btn-outline-primary">Leave a Message (AJAX)</a>
+        </nav>
+
+        <!-- Table to display the guestbook messages -->
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Date</th>
+                    <th>Username</th>
+                    <th>Country</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (messages.length > 0) { %>
+                    <% messages.forEach(message => { %>
+                        <tr>
+                            <td>
+                                <% 
+                                   // Use timestamp if available, else use date
+                                   const messageDate = message.timestamp || message.date;
+
+                                   // Handle Invalid Date format
+                                   const parsedDate = new Date(messageDate);
+                                   if (parsedDate.toString() === 'Invalid Date') {
+                                       // Display the raw date string if invalid
+                                       %><%= messageDate %><%
+                                   } else {
+                                       // Display formatted date and time
+                                       %><%= parsedDate.toLocaleString() %><%
+                                   }
+                                %>
+                            </td>
+                            <td><%= message.username %></td>
+                            <td><%= message.country %></td>
+                            <td><%= message.message %></td>
+                        </tr>
+                    <% }); %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="4" class="text-center">No messages found!</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Include Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
